@@ -243,41 +243,96 @@ Contact Me
 
 <h1>>"Are BTS K-Pop?" Answered by BTS-Only Fans vs Fans of Multiple K-Pop Groups</h1>
 
-OOMLLLLLLLLLLLLLLl
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+  <script>
+  /* how to make a note */
+const labels = ['No More Dream', 'N.O.', 'Boy in Luv', 'Danger', 'I Need U', 'Run', 'Save Me', 'Spring Day', 'DNA',
+'Fake Love',
+'Idol',
+'Boy with Luv',
+'ON',
+'Life Goes On',
+'Butter',
+'Yet To Come']; /* insert labels here */
 
-<canvas id="bar-chart" width="800" height="450"></canvas>
-
-new Chart(document.getElementById("bar-chart"), {
-    type: 'bar',
-    data: {
-      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-      datasets: [
-        {
-          label: "Population (millions)",
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-          data: [2478,5267,734,784,433]
-        }
-      ]
+const data = {
+  labels,
+  datasets: [
+    {
+      label: '% English lyrics', /* one line */
+      data: [23,41,20,7,48,31,51,5,24,60,73,51,59,32,100,68],
+      borderColor: 'red',
+      borderWidth: 2, /* these 3 should be uniform unless trying to emphasize */
+      pointRadius: 0,
+      tension: 0.3
     },
-    options: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Predicted world population (millions) in 2050'
+  ]
+};
+
+const totalDuration = 600; /* lower time, faster animation*/
+const maxPoints = Math.max(...data.datasets.map(ds => ds.data.length)); 
+const delayBetweenPoints = totalDuration / maxPoints;
+
+const previousY = (ctx) => { /* start with no previous data so start at origin*/
+  if (ctx.index === 0) {
+    return ctx.chart.scales.y.getPixelForValue(0);
+  }
+
+  return ctx.chart
+    .getDatasetMeta(ctx.datasetIndex) 
+    .data[ctx.index - 1] /* move to next value */
+    .getProps(['y'], true).y;
+};
+
+const animation = {
+  x: {
+    type: 'number',
+    easing: 'linear',
+    duration: delayBetweenPoints,
+    from: NaN, /* start at 0*/
+    delay(ctx) {
+      if (ctx.type !== 'data' || ctx.xStarted) return 0;
+      ctx.xStarted = true;
+      return ctx.index * delayBetweenPoints;
+    }
+  },
+  y: {
+    type: 'number',
+    easing: 'linear',
+    duration: delayBetweenPoints,
+    from: previousY,
+    delay(ctx) {
+      if (ctx.type !== 'data' || ctx.yStarted) return 0;
+      ctx.yStarted = true;
+      return ctx.index * delayBetweenPoints;
+    }
+  }
+};
+
+new Chart(document.getElementById('myChart'), {
+  type: 'line', /* chart type*/
+  data,
+  options: {
+    animation,
+    interaction: {
+      intersect: false
+    },
+    plugins: {
+      legend: {
+        display: true /* legend */
+      }
+    },
+    scales: {
+      x: {
+        type: 'category'
+      },
+      y: {
+        beginAtZero: true
       }
     }
+  }
 });
-
-
-  
 </script>
-  
-
-
-  
 
   
 </body>
