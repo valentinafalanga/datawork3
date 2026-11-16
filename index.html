@@ -150,5 +150,119 @@ Contact Me
 
 </section>
 
+
+
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  /* how to make a note */
+const labels = ['8:00', '8:05', '8:10', '8:15', '8:20', '8:25', '8:30', '8:35']; /* insert labels here */
+
+const data = {
+  labels,
+  datasets: [
+    {
+      label: 'Einstein Bagel', /* one line */
+      data: [6,5,4],
+      borderColor: 'yellow',
+      borderWidth: 2, /* these 3 should be uniform unless trying to emphasize */
+      pointRadius: 0,
+      tension: 0.3
+    },
+    {
+      label: 'dunkin',
+      data: [16,14,11,15,11,10],
+      borderColor: 'orange',
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3
+    },
+    {
+      label: 'panera',
+      data: [13,14,13,12],
+      borderColor: 'green',
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3
+    }
+  ]
+};
+
+const totalDuration = 10000; /* lower time, faster animation*/
+const maxPoints = Math.max(...data.datasets.map(ds => ds.data.length)); 
+const delayBetweenPoints = totalDuration / maxPoints;
+
+const previousY = (ctx) => { /* start with no previous data so start at origin*/
+  if (ctx.index === 0) {
+    return ctx.chart.scales.y.getPixelForValue(0);
+  }
+
+  return ctx.chart
+    .getDatasetMeta(ctx.datasetIndex) 
+    .data[ctx.index - 1] /* move to next value */
+    .getProps(['y'], true).y;
+};
+
+const animation = {
+  x: {
+    type: 'number',
+    easing: 'linear',
+    duration: delayBetweenPoints,
+    from: NaN, /* start at 0*/
+    delay(ctx) {
+      if (ctx.type !== 'data' || ctx.xStarted) return 0;
+      ctx.xStarted = true;
+      return ctx.index * delayBetweenPoints;
+    }
+  },
+  y: {
+    type: 'number',
+    easing: 'linear',
+    duration: delayBetweenPoints,
+    from: previousY,
+    delay(ctx) {
+      if (ctx.type !== 'data' || ctx.yStarted) return 0;
+      ctx.yStarted = true;
+      return ctx.index * delayBetweenPoints;
+    }
+  }
+};
+
+new Chart(document.getElementById('myChart'), {
+  type: 'line', /* chart type*/
+  data,
+  options: {
+    animation,
+    interaction: {
+      intersect: false
+    },
+    plugins: {
+      legend: {
+        display: true /* legend */
+      }
+    },
+    scales: {
+      x: {
+        type: 'category'
+      },
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+  
+
   
 </body>
