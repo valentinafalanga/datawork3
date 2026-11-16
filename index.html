@@ -245,40 +245,34 @@ Contact Me
 
 OOMLLLLLLLLLLLLLLl
 
-<canvas id="myChart2"></canvas>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  /* how to make a note */
-const labels = ['No', 'Yes']; /* insert labels here */
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: '% English lyrics', /* one line */
-      data: [1125,1450],
-      borderColor: 'red',
+<canvas id="bar-chart" width="800" height="450"></canvas>
+
+new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+      datasets: [
+        {
+          label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: [2478,5267,734,784,433]
+        }
+      ]
     },
-  ]
-};
-
-new Chart(
-    document.getElementById('myChart2'), {
-    {
-      type: 'bar',
-      data: {
-        labels: data.map(row => row.year),
-        datasets: [
-          {
-            label: 'Acquisitions by year',
-            data: data.map(row => row.count)
-          }
-        ]
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
       }
     }
-  );
-})();
+});
+
+
+  
 </script>
   
 
