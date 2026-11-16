@@ -249,33 +249,7 @@ v<canvas id="myChart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-const data = {
-  labels: ['yes','no'],
-  datasets: [   
-      label: 'BTS Only Fans', /* one line */
-      data: [1457,1125,730,1928],
-      borderColor: 'grey',
-]
-
-  };
-
-const config = {
-  type: 'bar',
-  data: data,
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  },
-};
-
-
-
-  
-  
-  const labels = Utils.months({count: 7});
+const labels = Utils.months({count: 7});
 const data = {
   labels: labels,
   datasets: [{
