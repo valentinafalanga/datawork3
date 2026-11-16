@@ -249,21 +249,12 @@ v<canvas id="myChart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-  const labels = Utils.months({count: 7});
 const data = {
-  labels: labels,
+  labels: ['yes','no'],
   datasets: [   
-    {
       label: 'BTS Only Fans', /* one line */
-      data: [1457,1125],
+      data: [1457,1125,730,1928],
       borderColor: 'grey',
-    },
-    
-     {
-      label: 'Fans of Multiple Groups', /* one line */
-      data: [730,1928],
-      borderColor: 'red',
-    }
 ]
 
   };
